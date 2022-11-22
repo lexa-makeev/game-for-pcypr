@@ -1,0 +1,22 @@
+header{
+    margin-top: 60px;
+}
+header .container{
+    display: flex;
+    border-radius: 31px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 34px;
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.oborot, .raiting{
+    margin-right: 70px;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 23px;
+    color: #000000;
+}
+.oborot span, .raiting span{
+    font-weight: 400;
+}
