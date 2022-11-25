@@ -5,11 +5,19 @@ import axios from "axios";
 import VakansTable from "./Components/VakansTable";
 import Workers from "./Components/Workers";
 import NewVakans from "./Components/NewVakans";
+import useInterval from "@use-it/interval";
+
+import { useDispatch, useSelector } from "react-redux";
+import { setUpdate } from "./redux/slicers/updateAllSlicer";
 function App() {
+  const dispatch = useDispatch();
+  const { update } = useSelector((state) => state);
   const [isInfo, setInfo] = useState("");
   const [isVakans, setVakans] = useState(null);
   const [isWorkers, setWorkers] = useState(null);
+  const [isTime, setTime] = useState(60000);
   useEffect(() => {
+    dispatch(setUpdate(false));
     let formData = new FormData();
     axios({
       method: "post",
@@ -47,8 +55,12 @@ function App() {
       .catch(function () {
         console.log("Ошибка");
       });
-  }, []);
+  }, [update]);
 
+  useInterval(() => {
+    alert("1");
+  }, isTime);
+  function setForcmajor() {}
   return (
     <>
       <Header obj={isInfo} />
@@ -58,8 +70,12 @@ function App() {
             <div className="forc_major">
               <h2>Уменьшить цены на услугу и повысить спрос:</h2>
               <div className="btn_major">
-                <button className="new_major">Начать</button>
-                <button className="stop_major">Остановить</button>
+                <button className="new_major" onClick={() => setTime(6000)}>
+                  Начать
+                </button>
+                <button className="stop_major" onClick={() => setTime(60000)}>
+                  Остановить
+                </button>
               </div>
             </div>
             <NewVakans />
@@ -101,7 +117,7 @@ function App() {
               </p>
               <p>
                 Уменьшена цена на услугу и повышен спрос:
-                <span>Нет</span>
+                <span>{isTime === 60000 ? "Нет" : "Да"}</span>
               </p>
             </div>
             <Workers obj={isWorkers} />

@@ -1,9 +1,12 @@
 import React from "react";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setUpdate } from "../redux/slicers/updateAllSlicer";
 
 function NewVakans() {
+  const dispatch = useDispatch();
   function random() {
-    let min = 1.1,
+    let min = 2.1,
       max = 4.99;
     return (Math.random() * (max - min) + min).toFixed(2);
   }
@@ -27,6 +30,7 @@ function NewVakans() {
     })
       .then(function (response) {
         console.log(response);
+        dispatch(setUpdate(true));
       })
       .catch(function () {
         console.log("Ошибка");

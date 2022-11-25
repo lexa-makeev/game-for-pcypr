@@ -1,9 +1,29 @@
 import React from "react";
 import axios from "axios";
+import { setUpdate } from "../redux/slicers/updateAllSlicer";
+import { useDispatch } from "react-redux";
 
 function VakansTable({ obj }) {
-  console.log(obj);
-  function setVakans(id) {}
+  const dispatch = useDispatch();
+  function setVakans(id) {
+    let formData = new FormData();
+    formData.append("id", id);
+
+    axios({
+      method: "post",
+      url: "http://localhost:80/PCYRP/api/setVakans.php",
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+      .then(function (response) {
+        console.log(response);
+        dispatch(setUpdate(true));
+      })
+      .catch(function () {
+        console.log("Ошибка");
+      });
+  }
+
   function deleteVakans(id) {
     let formData = new FormData();
     formData.append("id", id);
@@ -16,6 +36,7 @@ function VakansTable({ obj }) {
     })
       .then(function (response) {
         console.log(response);
+        dispatch(setUpdate(true));
       })
       .catch(function () {
         console.log("Ошибка");
