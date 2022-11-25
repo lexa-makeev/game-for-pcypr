@@ -77,9 +77,8 @@ header .container{
     text-align: center;
     width: 100%;
 }
-.wrapper__up textarea{
-    width: 551px;
-    height: 336px;
+.vakans__wrapper table button{
+    cursor: pointer;
 }
 .vakans__wrapper{
     width: 792px;
@@ -87,6 +86,9 @@ header .container{
     background: rgba(255, 255, 255, 0.46);
     border-radius: 31px;
     padding-top: 17px;
+}
+.uslug_wrapper {
+    width: 550px;
 }
 .vakans h2{
     font-weight: 500;
@@ -125,4 +127,8 @@ header .container{
 
     color: #FFFFFF;
 
+}
+.all_forcmajor{
+    display: flex;
+    justify-content: space-between;
 }

@@ -1,37 +1,87 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Components/Header/Header";
 import "./App.css";
+import axios from "axios";
+import VakansTable from "./Components/VakansTable";
+import Workers from "./Components/Workers";
+import NewVakans from "./Components/NewVakans";
 function App() {
+  const [isInfo, setInfo] = useState("");
+  const [isVakans, setVakans] = useState(null);
+  const [isWorkers, setWorkers] = useState(null);
+  useEffect(() => {
+    let formData = new FormData();
+    axios({
+      method: "post",
+      url: "http://localhost:80/PCYRP/api/getInfo.php",
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+      .then(function (response) {
+        setInfo(response.data);
+      })
+      .catch(function () {
+        console.log("Ошибка");
+      });
+    axios({
+      method: "post",
+      url: "http://localhost:80/PCYRP/api/getVakans.php",
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+      .then(function (response) {
+        setVakans(response.data);
+      })
+      .catch(function () {
+        console.log("Ошибка");
+      });
+    axios({
+      method: "post",
+      url: "http://localhost:80/PCYRP/api/getWorkers.php",
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+      .then(function (response) {
+        setWorkers(response.data);
+      })
+      .catch(function () {
+        console.log("Ошибка");
+      });
+  }, []);
+
   return (
     <>
-      <Header />
-
+      <Header obj={isInfo} />
       <section id="main">
         <div className="container">
-          <div className="forc_major">
-            <h2>Уменьшить цены на услугу и повысить спрос:</h2>
-            <div className="btn_major">
-              <button className="new_major">Начать</button>
-              <button className="stop_major">Остановить</button>
+          <div className="all_forcmajor">
+            <div className="forc_major">
+              <h2>Уменьшить цены на услугу и повысить спрос:</h2>
+              <div className="btn_major">
+                <button className="new_major">Начать</button>
+                <button className="stop_major">Остановить</button>
+              </div>
             </div>
+            <NewVakans />
           </div>
+
           <div className="wrapper__up">
-            <textarea name="null" id="" cols="30" rows="10"></textarea>
             <div className="vakans">
-              <h2>Вакансии</h2>
-              <div className="vakans__wrapper">
+              <h2>Заказ услуги</h2>
+              <div className="vakans__wrapper uslug_wrapper">
                 <table>
                   <tr>
-                    <th>Имя</th>
-                    <th>Отвественность</th>
-                    <th>Юмор</th>
-                    <th>Коммуникативность</th>
+                    <th>№</th>
+                    <th>Цена</th>
+                    <th>Действие</th>
                   </tr>
                   <tr>
-                    <td>Аниматор №5</td>
-                    <td>3.0</td>
-                    <td>4.0</td>
-                    <td>5.0</td>
+                    <td>
+                      Услуга № <span></span>
+                    </td>
+                    <td>
+                      Цена <span></span>
+                    </td>
                     <td>
                       <button>Принять</button>
                     </td>
@@ -39,6 +89,7 @@ function App() {
                 </table>
               </div>
             </div>
+            <VakansTable obj={isVakans} />
           </div>
           <div className="wrapper__down">
             <div className="p_down">
@@ -53,27 +104,7 @@ function App() {
                 <span>Нет</span>
               </p>
             </div>
-            <div className="vakans">
-              <h2>Текущие работники</h2>
-              <div className="vakans__wrapper">
-                <table>
-                  <tr>
-                    <th>Имя</th>
-                    <th>Отвественность</th>
-                    <th>Юмор</th>
-                    <th>Коммуникативность</th>
-                    <th>Заказ</th>
-                  </tr>
-                  <tr>
-                    <td>Аниматор №5</td>
-                    <td>3.0</td>
-                    <td>4.0</td>
-                    <td>5.0</td>
-                    <td>Выполняет</td>
-                  </tr>
-                </table>
-              </div>
-            </div>
+            <Workers obj={isWorkers} />
           </div>
         </div>
       </section>
