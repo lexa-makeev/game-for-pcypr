@@ -79,10 +79,15 @@ header .container{
 }
 .vakans__wrapper table button{
     cursor: pointer;
+    margin-right: 5px;
+}
+.vakans__wrapper table button:last-child{
+    margin-right: 0;
 }
 .vakans__wrapper{
     width: 792px;
     height: 336px;
+    overflow-y: scroll;
     background: rgba(255, 255, 255, 0.46);
     border-radius: 31px;
     padding-top: 17px;
