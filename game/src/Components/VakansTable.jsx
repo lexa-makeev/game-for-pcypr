@@ -57,7 +57,7 @@ function VakansTable({ obj }) {
           {obj !== null &&
             obj.map((data) => (
               <>
-                <tr>
+                <tr key={data.id_workers}>
                   <td>Аниматор №{data.id_workers}</td>
                   <td>{data.otv}</td>
                   <td>{data.jumor}</td>

@@ -10,6 +10,9 @@ function Header({ obj }) {
         <p className="raiting">
           Рейтинг предприятия: <span>{obj.raiting}</span>
         </p>
+        <p className="raiting">
+          1 день: <span>6 минут</span>
+        </p>
       </div>
     </header>
   );
