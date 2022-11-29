@@ -31,6 +31,7 @@ function NewVakans() {
     })
       .then(function (response) {
         console.log(response);
+
         dispatch(setUpdate(true));
       })
       .catch(function () {

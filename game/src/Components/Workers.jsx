@@ -42,7 +42,9 @@ function Workers({ obj }) {
                 <td>{data.otv}</td>
                 <td>{data.jumor}</td>
                 <td>{data.kommun}</td>
-                <td>Выполняет</td>
+                <td>
+                  {data.usluga_id_usluga !== null ? "Выполняет" : "Свободен"}
+                </td>
                 <td>
                   <button onClick={() => deleteWorkers(data.id_workers)}>
                     Уволить

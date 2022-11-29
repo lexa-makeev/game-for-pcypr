@@ -9,6 +9,7 @@ import useInterval from "@use-it/interval";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setUpdate } from "./redux/slicers/updateAllSlicer";
+import Popupnaz from "./Components/PopUpNaznach/Popupnaz";
 function App() {
   const dispatch = useDispatch();
   const { update } = useSelector((state) => state);
@@ -16,7 +17,10 @@ function App() {
   const [isVakans, setVakans] = useState(null);
   const [isWorkers, setWorkers] = useState(null);
   const [isUsluga, setUsluga] = useState(null);
-  const [isTime, setTime] = useState(60000);
+  const [TimeUsluga, setTimeUsluga] = useState(false);
+
+  const [valuemin, setMin] = useState(79800);
+  const [valuemax, setMax] = useState(138000);
   useEffect(() => {
     dispatch(setUpdate(false));
     let formData = new FormData();
@@ -67,6 +71,13 @@ function App() {
       .catch(function () {
         console.log("Ошибка");
       });
+    if (isInfo.raiting < 4.2) {
+      setMin(108000);
+      setMax(168000);
+    } else if (isInfo.raiting < 3.5) {
+      setMin(138000);
+      setMax(180000);
+    }
   }, [update]);
   function newUsluga() {
     if (activeMajor === true) {
@@ -81,6 +92,7 @@ function App() {
     })
       .then(function (response) {
         dispatch(setUpdate(true));
+        setTimeUsluga(true);
         console.log(response);
       })
       .catch(function () {
@@ -104,14 +116,13 @@ function App() {
         console.log("Ошибка");
       });
   }
-  const [valuemin, setMin] = useState(140000);
-  const [valuemax, setMax] = useState(250000);
+
   function randomTimer() {
     let min = valuemin,
       max = valuemax;
     return (Math.random() * (max - min) + min).toFixed(1);
   }
-  const [Timer, setTimer] = useState(140000);
+  const [Timer, setTimer] = useState(79800);
   const [RefreshTimer, setRefreshTimer] = useState(false);
   const [activeMajor, setActiveMajor] = useState(false);
   useEffect(() => {
@@ -125,18 +136,52 @@ function App() {
   }, Timer);
   function setForcmajor() {
     setRefreshTimer(true);
-    setMin(60000);
-    setMax(100000);
+    setMin(48000);
+    setMax(90000);
     setActiveMajor(true);
   }
   function delForcmajor() {
     setRefreshTimer(true);
-    setMin(140000);
-    setMax(250000);
+    setMin(79800);
+    setMax(138000);
     setActiveMajor(false);
   }
+  const [showPopZnach, setShowZnach] = useState(false);
+  const [idButtonUsluga, setIdButtonUsluga] = useState("");
+  function naznach(id) {
+    setShowZnach(true);
+    setIdButtonUsluga(id);
+  }
+  useEffect(() => {
+    if (isUsluga !== null) {
+    }
+  }, [isUsluga]);
+  useInterval(
+    () => {
+      setTimeUsluga(false);
+      let formData = new FormData();
+      formData.append("id", isUsluga[isUsluga.length - 1].id_usluga);
+      axios({
+        method: "post",
+        url: "http://localhost:80/PCYRP/api/deleteUsluga.php",
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+        .then(function (response) {
+          console.log(response);
+          dispatch(setUpdate(true));
+        })
+        .catch(function () {
+          console.log("Ошибка");
+        });
+    },
+    TimeUsluga ? 24000 : null
+  );
   return (
     <>
+      {showPopZnach && (
+        <Popupnaz setShowZnach={setShowZnach} idButtonUsluga={idButtonUsluga} />
+      )}
       <Header obj={isInfo} />
       <section id="main">
         <div className="container">
@@ -175,7 +220,9 @@ function App() {
                           Цена <span>{data.cost}</span>
                         </td>
                         <td>
-                          <button>Принять</button>
+                          <button onClick={() => naznach(data.id_usluga)}>
+                            Открыть
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -193,11 +240,24 @@ function App() {
                 </span>
               </p>
               <p>
-                В работе аниматоров: <span>3</span>
-              </p>
-              <p>
                 Уменьшена цена на услугу и повышен спрос:
                 <span>{activeMajor === false ? "Нет" : "Да"}</span>
+              </p>
+              <p>
+                Текущая минимальная скорость услуги:
+                <span>{valuemin / 60000} минут</span>
+              </p>
+              <p>
+                Текущая максимальная скорость услуги:
+                <span>{valuemax / 60000} минут</span>
+              </p>
+              <p>
+                Текущая минимальная скорость вакансий:
+                <span>{240000 / 60000} минут</span>
+              </p>
+              <p>
+                Текущая максимальная скорость вакансий:
+                <span>{300000 / 60000} минут</span>
               </p>
             </div>
             <Workers obj={isWorkers} />
