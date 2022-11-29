@@ -81,10 +81,10 @@ function App() {
       .catch(function () {
         console.log("Ошибка");
       });
-    if (isInfo.raiting < 4.2) {
+    if (isInfo.raiting < 4.2 && activeMajor === false) {
       setMin(108000);
       setMax(168000);
-    } else if (isInfo.raiting < 3.5) {
+    } else if (isInfo.raiting < 3.5 && activeMajor === false) {
       setMin(138000);
       setMax(180000);
     }
@@ -101,8 +101,8 @@ function App() {
       headers: { "Content-Type": "multipart/form-data" },
     })
       .then(function (response) {
-        dispatch(setUpdate(true));
         setTimeUsluga(true);
+        dispatch(setUpdate(true));
         console.log(response);
       })
       .catch(function () {

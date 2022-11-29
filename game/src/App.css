@@ -87,7 +87,7 @@ header .container{
 .vakans__wrapper{
     width: 792px;
     height: 336px;
-    overflow-y: scroll;
+    overflow-y: auto;
     background: rgba(255, 255, 255, 0.46);
     border-radius: 31px;
     padding-top: 17px;
