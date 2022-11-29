@@ -3,10 +3,13 @@ import "./Popupnaz.css";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setUpdate } from "../../redux/slicers/updateAllSlicer";
+import useInterval from "@use-it/interval";
 function Popupnaz({ setShowZnach, idButtonUsluga }) {
   const dispatch = useDispatch();
   const { update } = useSelector((state) => state);
   const [isFreeWorkers, setFreeWorkers] = useState(null);
+  const [valueWorker, setValueWorker] = useState("");
+
   useEffect(() => {
     axios({
       method: "post",
@@ -32,6 +35,26 @@ function Popupnaz({ setShowZnach, idButtonUsluga }) {
       .then(function (response) {
         console.log(response);
         setShowZnach(false);
+
+        dispatch(setUpdate(true));
+      })
+      .catch(function () {
+        console.log("Ошибка");
+      });
+  }
+  function setWorkerUsluga() {
+    let formData = new FormData();
+    formData.append("id", idButtonUsluga);
+    formData.append("id_worker", valueWorker);
+    axios({
+      method: "post",
+      url: "http://localhost:80/PCYRP/api/setWorkerUsluga.php",
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+      .then(function (response) {
+        console.log(response);
+        setShowZnach(false);
         dispatch(setUpdate(true));
       })
       .catch(function () {
@@ -44,7 +67,11 @@ function Popupnaz({ setShowZnach, idButtonUsluga }) {
         <h2>Назначение аниматора на услугу</h2>
         <div className="label_input">
           <label htmlFor="">Выбрать свободного аниматора</label>
-          <select name="choice">
+          <select
+            name="choice"
+            onChange={(e) => setValueWorker(e.target.value)}
+            value={valueWorker}
+          >
             <option value="null"></option>
             {isFreeWorkers !== null &&
               isFreeWorkers.map((data) => (
@@ -55,7 +82,7 @@ function Popupnaz({ setShowZnach, idButtonUsluga }) {
                 </>
               ))}
           </select>
-          <button>Назначить</button>
+          <button onClick={() => setWorkerUsluga()}>Назначить</button>
           <button onClick={() => deleteUsluga()}>Отказаться</button>
           <button onClick={() => setShowZnach(false)}>Закрыть</button>
         </div>

@@ -10,6 +10,7 @@ import useInterval from "@use-it/interval";
 import { useDispatch, useSelector } from "react-redux";
 import { setUpdate } from "./redux/slicers/updateAllSlicer";
 import Popupnaz from "./Components/PopUpNaznach/Popupnaz";
+import Zarplata from "./Components/Zarplata";
 function App() {
   const dispatch = useDispatch();
   const { update } = useSelector((state) => state);
@@ -198,6 +199,7 @@ function App() {
               </div>
             </div>
             <NewVakans />
+            <Zarplata />
           </div>
 
           <div className="wrapper__up">

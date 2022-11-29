@@ -23,6 +23,24 @@ function Workers({ obj }) {
         console.log("Ошибка");
       });
   }
+  function deleteWork(id, id_usluga) {
+    let formData = new FormData();
+    formData.append("id", id);
+    formData.append("id_usluga", id_usluga);
+    axios({
+      method: "post",
+      url: "http://localhost:80/PCYRP/api/deleteWork.php",
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+      .then(function (response) {
+        console.log(response);
+        dispatch(setUpdate(true));
+      })
+      .catch(function () {
+        console.log("Ошибка");
+      });
+  }
   return (
     <div className="vakans">
       <h2>Текущие работники</h2>
@@ -49,6 +67,17 @@ function Workers({ obj }) {
                   <button onClick={() => deleteWorkers(data.id_workers)}>
                     Уволить
                   </button>
+                </td>
+                <td>
+                  {data.usluga_id_usluga !== null && (
+                    <button
+                      onClick={() =>
+                        deleteWork(data.id_workers, data.usluga_id_usluga)
+                      }
+                    >
+                      Закончить
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

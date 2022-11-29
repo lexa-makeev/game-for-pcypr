@@ -8,7 +8,8 @@ function Header({ obj }) {
           Оборот предприятия: <span>{obj.cost_oborot} рублей</span>
         </p>
         <p className="raiting">
-          Рейтинг предприятия: <span>{obj.raiting}</span>
+          Рейтинг предприятия:{" "}
+          <span>{obj.raiting > 5 ? "5" : obj.raiting}</span>
         </p>
         <p className="raiting">
           1 день: <span>6 минут</span>
