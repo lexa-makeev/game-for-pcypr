@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUpdate } from "./redux/slicers/updateAllSlicer";
 import Popupnaz from "./Components/PopUpNaznach/Popupnaz";
 import Zarplata from "./Components/Zarplata";
+import Promo from "./Components/Promo";
 function App() {
   const dispatch = useDispatch();
   const { update } = useSelector((state) => state);
@@ -22,6 +23,8 @@ function App() {
 
   const [valuemin, setMin] = useState(79800);
   const [valuemax, setMax] = useState(138000);
+
+  const [showPromo, setShowPromo] = useState(false);
   useEffect(() => {
     dispatch(setUpdate(false));
     let formData = new FormData();
@@ -32,7 +35,13 @@ function App() {
       headers: { "Content-Type": "multipart/form-data" },
     })
       .then(function (response) {
+        console.log();
         setInfo(response.data);
+        if (response.data.raiting <= 3.6) {
+          setShowPromo(true);
+        } else {
+          setShowPromo(false);
+        }
       })
       .catch(function () {
         console.log("Ошибка");
@@ -200,6 +209,7 @@ function App() {
             </div>
             <NewVakans />
             <Zarplata />
+            {showPromo && <Promo />}
           </div>
 
           <div className="wrapper__up">
